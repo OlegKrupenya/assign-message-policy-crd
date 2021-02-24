@@ -1,0 +1,9 @@
+apiVersion: assignmessagepolicycontroller.k8s.io/v1alpha1
+kind: AssignMessagePolicy
+metadata:
+  name: example-bar
+spec:
+  deploymentName: assign-message-policy-deploy
+  orderId: 123
+  description: airport tax
+  replicas: 1

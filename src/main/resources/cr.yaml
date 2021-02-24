@@ -1,0 +1,9 @@
+apiVersion: assignmessagepolicycontroller.k8s.io/v1alpha1
+kind: AssignMessagePolicy
+metadata:
+  name: example-assignmessagepolicy
+spec:
+  deploymentName: example-assignmessagepolicy-deploy
+  replicas: 1
+  orderId: 1
+  description: example-assignmessagepolicy-description
