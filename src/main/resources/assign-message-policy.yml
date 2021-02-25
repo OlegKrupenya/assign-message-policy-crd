@@ -1,7 +1,7 @@
 apiVersion: assignmessagepolicycontroller.k8s.io/v1alpha1
 kind: AssignMessagePolicy
 metadata:
-  name: example-bar
+  name: create-response-message
 spec:
   deploymentName: assign-message-policy-deploy
   orderId: 123
