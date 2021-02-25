@@ -15,12 +15,9 @@ import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessage
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicyList;
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicySpec;
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicyStatus;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +186,7 @@ public class AssignMessagePolicyController {
     }
 
     private void createApiProxy(AssignMessagePolicySpec spec) {
-        copyApiProxyToTarget();
+        copyApiProxyToTarget(spec);
     }
 
     private void createDeployments(AssignMessagePolicy assignMessagePolicy) {
