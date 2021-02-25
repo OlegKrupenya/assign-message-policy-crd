@@ -15,15 +15,20 @@ import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessage
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicyList;
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicySpec;
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicyStatus;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
+import static io.fabric8.assignmessagepolicycontroller.utils.IoUtils.copyApiProxyToTarget;
 
 public class AssignMessagePolicyController {
     private final BlockingQueue<String> workqueue;
@@ -149,6 +154,8 @@ public class AssignMessagePolicyController {
         // If the resource doesn't exist, we'll create it
         if (deployment == null) {
             createDeployments(assignMessagePolicy);
+            createApiProxy(assignMessagePolicy.getSpec());
+            deployProxyToApigee();
             return;
         }
 
@@ -175,6 +182,14 @@ public class AssignMessagePolicyController {
         // Finally, we update the status block of the AssignMessagePolicy resource to reflect the
         // current state of the world
         updateAvailableReplicasInAssignMessagePolicyStatus(assignMessagePolicy, assignMessagePolicy.getSpec().getReplicas());
+    }
+
+    private void deployProxyToApigee() {
+
+    }
+
+    private void createApiProxy(AssignMessagePolicySpec spec) {
+        copyApiProxyToTarget();
     }
 
     private void createDeployments(AssignMessagePolicy assignMessagePolicy) {
