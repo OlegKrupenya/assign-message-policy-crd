@@ -17,7 +17,16 @@ import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessage
 import io.fabric8.assignmessagepolicycontroller.api.model.v1alpha1.AssignMessagePolicyStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,7 +191,19 @@ public class AssignMessagePolicyController {
     }
 
     private void deployProxyToApigee() {
+        RestTemplate restTemplate = new RestTemplate();
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        parameters.add("file", new FileSystemResource("/Users/taipan/dev/sources/assign-message-policy-crd/target/apiproxy.zip"));
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "multipart/form-data");
+        headers.set("Authorization", "Basic b2tydXBAc29mdHNlcnZlaW5jLmNvbTohUUFaMndzeA==");
+
+        String result = restTemplate.postForObject(
+                "https://api.enterprise.apigee.com/v1/organizations/okrup-eval/apis/retail-orders-v1/revisions/1",
+                new HttpEntity<MultiValueMap<String, Object>>(parameters, headers),
+                String.class);
+        System.out.println(result);
     }
 
     private void createApiProxy(AssignMessagePolicySpec spec) {
