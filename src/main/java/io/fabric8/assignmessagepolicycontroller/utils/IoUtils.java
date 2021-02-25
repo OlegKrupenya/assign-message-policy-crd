@@ -44,52 +44,13 @@ public class IoUtils {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.parse(filepath);
 
-            // Get the root element
-            Node company = doc.getFirstChild();
-
-            // Get the payload element , it may not working if tag has spaces, or
-            // whatever weird characters in front...it's better to use
-            // getElementsByTagName() to get it directly.
-            // Node payload = company.getFirstChild();
-
-            // Get the payload element by tag name directly
             Node payload = doc.getElementsByTagName("Payload").item(0);
 
-            // update payload attribute
-            String data = payload.getTextContent();
-
-            NodeList childNodes = payload.getChildNodes();
             String newContent = """
 [{"id": "%s", "description": "%s"}]
 """;
             String newPayload = String.format(newContent, spec.getOrderId(), spec.getDescription());
             payload.setTextContent(newPayload);
-//            Node nodeAttr = attr.getNamedItem("id");
-//            nodeAttr.setTextContent("2");
-//
-//            // append a new node to payload
-//            Element age = doc.createElement("age");
-//            age.appendChild(doc.createTextNode("28"));
-//            payload.appendChild(age);
-//
-//            // loop the payload child node
-//            NodeList list = payload.getChildNodes();
-//
-//            for (int i = 0; i < list.getLength(); i++) {
-//
-//                Node node = list.item(i);
-//
-//                // get the salary element, and update the value
-//                if ("salary".equals(node.getNodeName())) {
-//                    node.setTextContent("2000000");
-//                }
-//
-//                //remove firstname
-//                if ("firstname".equals(node.getNodeName())) {
-//                    payload.removeChild(node);
-//                }
-//
-//            }
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -97,17 +58,8 @@ public class IoUtils {
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(filepath));
             transformer.transform(source, result);
-
-            System.out.println("Done");
-
-        } catch (ParserConfigurationException pce) {
+        } catch (ParserConfigurationException | TransformerException | IOException | SAXException pce) {
             pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (SAXException sae) {
-            sae.printStackTrace();
         }
     }
 
