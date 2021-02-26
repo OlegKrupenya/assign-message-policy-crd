@@ -4,6 +4,6 @@ metadata:
   name: create-response-message
 spec:
   deploymentName: assign-message-policy-deploy
-  orderId: 234
-  description: airport tax
+  orderId: ABC
+  description: order description
   replicas: 1
